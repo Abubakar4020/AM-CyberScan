@@ -1,9 +1,9 @@
-AM CyberScan
+# AM CyberScan
 
 AM CyberScan is a professional web-based security tool designed to protect users from phishing attacks, malware, and other cyber threats. Unlike most cybersecurity tools that rely on command-line interfaces, AM CyberScan offers a user-friendly GUI, making it easy for anyone to use while maintaining powerful backend detection capabilities.
 
-Features
-1. URL Scanner
+# Features
+1. URL Scanner:
 
 Scans URLs for malicious and phishing content.
 
@@ -13,7 +13,7 @@ Displays results in a graphical format, showing risk levels as percentages for c
 
 Supports exporting scan reports and storing scan history for future reference.
 
-2. File Scanner
+2. File Scanner:
 
 Scans uploaded files for viruses, malware, and other suspicious elements.
 
@@ -23,7 +23,7 @@ Includes report export and history tracking.
 
 Graphical representation of results allows users to quickly identify risk levels.
 
-Technology Stack
+3. Technology Stack:
 
 Frontend: HTML, CSS, JavaScript
 
@@ -31,7 +31,7 @@ Backend: Java
 
 Database/Storage: Stores scan history and reports (can be configured)
 
-Why AM CyberScan?
+# Why AM CyberScan?
 
 Professional-grade detection accuracy and reliability.
 
@@ -43,7 +43,7 @@ Generates exportable reports and maintains scan history for better tracking.
 
 Graphical visualization makes results easy to interpret at a glance.
 
-How It Works
+# How It Works:
 
 URL Scanning: Input any URL → Tool checks for phishing, malicious patterns, and risk factors → Displays safe/unsafe status with percentage-based graphs.
 
@@ -51,7 +51,7 @@ File Scanning: Upload files → Tool scans for malware, viruses, and suspicious 
 
 Reports & History: Export scans as reports and view past scans in history logs.
 
-Future Improvements
+# Future Improvements:
 
 Integration with external threat intelligence APIs for more comprehensive detection.
 
@@ -59,6 +59,6 @@ Multi-user support with personalized dashboards.
 
 Cloud-based scanning for faster and scalable analysis.
 
-License
+# License:
 
 This project is for educational and personal use. Please do not use it for scanning websites or files without permission.
