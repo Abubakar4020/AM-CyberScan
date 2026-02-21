@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛡️ AM CyberScan</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar" id="navbar" style="display: none;">
+  <div class="nav-brand">
+    <span class="logo-icon">🛡️</span>
+    <span class="logo-text">AM CyberScan</span>
+  </div>
+  <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+  <ul class="nav-menu" id="navMenu">
+    <li><a href="#home" class="nav-link active" data-target="home">Home</a></li>
+    <li><a href="#urlScanner" class="nav-link" data-target="urlScanner">URL Scanner</a></li>
+    <li><a href="#fileScanner" class="nav-link" data-target="fileScanner">File Scanner</a></li>
+    <li><a href="#dashboard" class="nav-link" data-target="dashboard">Dashboard</a></li>
+    <li><a href="#reports" class="nav-link" data-target="reports">Reports</a></li>
+    <li><a href="#about" class="nav-link" data-target="about">About</a></li>
+    <li><a href="#contact" class="nav-link" data-target="contact">Contact</a></li>
+    <li><a href="#privacy" class="nav-link" data-target="privacy">Privacy</a></li>
+    <li><a href="#terms" class="nav-link" data-target="terms">Terms</a></li>
+    <li><a href="#" class="nav-link logout-link" id="logoutBtn">Logout</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <!-- Login Section -->
+  <div id="login" class="auth-section active">
+    <div class="auth-container">
+      <div class="auth-logo">🛡️</div>
+      <h1 class="auth-title">AM CyberScan</h1>
+      <p class="auth-subtitle">Sign in to your account</p>
+      
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <input type="text" id="loginEmail" class="auth-input" placeholder="Email or Username" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="loginPassword" class="auth-input" placeholder="Password" required>
+        </div>
+        <button type="submit" class="auth-btn">Login</button>
+      </form>
+      
+      <p class="auth-switch">Don't have an account? <a href="#" id="showRegister">Register</a></p>
+    </div>
+  </div>
+
+  <!-- Register Section -->
+  <div id="register" class="auth-section">
+    <div class="auth-container">
+      <div class="auth-logo">🛡️</div>
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Join AM CyberScan</p>
+      
+      <form class="auth-form" id="registerForm">
+        <div class="form-group">
+          <input type="text" id="regUsername" class="auth-input" placeholder="Username" required>
+        </div>
+        <div class="form-group">
+          <input type="email" id="regEmail" class="auth-input" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="regOrganisation" class="auth-input" placeholder="Organisation" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="regCity" class="auth-input" placeholder="City" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="regPassword" class="auth-input" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Confirm Password" required>
+        </div>
+        <button type="submit" class="auth-btn">Register</button>
+      </form>
+      
+      <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Login</a></p>
+    </div>
+  </div>
+
+  <!-- Home Section - Tool Selection -->
+  <div id="home" class="scanner-section">
+    <div class="hero-section">
+      <h1>🛡️ AM CyberScan</h1>
+      <p class="subtitle">Advanced Threat Detection & Protection</p>
+      <p class="hero-text">Protect yourself from phishing attacks and hidden malware with AM CyberScan's advanced security tools.</p>
+    </div>
+    
+    <div class="tool-selection">
+      <div class="tool-card" data-tool="urlScanner">
+        <div class="tool-icon">🔍</div>
+        <h2>URL Scanner</h2>
+        <p>Scan URLs and emails for phishing and suspicious threats</p>
+        <button class="tool-btn">Launch Tool →</button>
+      </div>
+      
+      <div class="tool-card" data-tool="fileScanner">
+        <div class="tool-icon">📁</div>
+        <h2>File Scanner</h2>
+        <p>Analyze files for malware, check hashes, and validate file properties</p>
+        <button class="tool-btn">Launch Tool →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div id="dashboard" class="scanner-section">
+    <div class="tool-header">
+      <h1>Dashboard 📊</h1>
+    </div>
+    <div class="dashboard-content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🔍</div>
+          <div class="stat-number" id="totalScans">0</div>
+          <div class="stat-label">Total Scans</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-number" id="highRiskCount">0</div>
+          <div class="stat-label">High Risk</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">🟡</div>
+          <div class="stat-number" id="suspiciousCount">0</div>
+          <div class="stat-label">Suspicious</div>
+        </div>
+        <div class="stat-card safe">
+          <div class="stat-icon">✅</div>
+          <div class="stat-number" id="safeCount">0</div>
+          <div class="stat-label">Safe</div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <h3>Risk Distribution</h3>
+        <canvas id="dashboardBarChart" width="350" height="150"></canvas>
+      </div>
+      <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <div id="activityList" class="activity-list">
+          <p class="no-activity">No recent activity</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reports Section -->
+  <div id="reports" class="scanner-section">
+    <div class="tool-header">
+      <h1>Reports 📋</h1>
+    </div>
+    <div class="reports-content">
+      <div class="reports-header">
+        <h3>Scan History</h3>
+        <button id="downloadAllBtn" class="tool-btn">Download All</button>
+      </div>
+      <div id="reportsList" class="reports-list">
+        <p class="no-reports">No reports available. Perform a scan to generate reports.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <div id="contact" class="scanner-section">
+    <div class="tool-header">
+      <h1>Contact</h1>
+    </div>
+    <div class="contact-content">
+      <div class="contact-card">
+        <p>📧 Email: abubakararshad4020@gmail.com</p>
+        <p>📞 Phone: +92 (317) 45 77362</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- URL Scanner Section -->
+  <div id="urlScanner" class="scanner-section">
+    <div class="tool-header">
+      <h1>URL Scanner 🔍</h1>
+    </div>
+    
+    <div id="scanProgress" class="scan-progress">
+      <div class="progress-steps">
+        <div class="progress-step" id="step1">🔍 Analyzing...</div>
+        <div class="progress-step" id="step2">🌐 Checking...</div>
+        <div class="progress-step" id="step3">⚠️ Detecting...</div>
+        <div class="progress-step" id="step4">📊 Calculating...</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <textarea id="urlInput" placeholder="Paste URL or email content here..."></textarea>
+      <div id="dropArea">Or drag & drop files here</div>
+      <div class="button-group">
+        <button id="scanBtn">Scan 🔍</button>
+        <button id="exportPdfBtn">Export PDF 📄</button>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <div id="riskMeter">
+        <h2>Risk Level: <span id="riskText">---</span></h2>
+      </div>
+      <div class="risk-bars-container">
+        <canvas id="riskBarChart" width="350" height="200"></canvas>
+      </div>
+    </div>
+
+    <div id="aiSuggestion" class="ai-popup"></div>
+  </div>
+
+  <!-- File Scanner Section -->
+  <div id="fileScanner" class="scanner-section">
+    <div class="tool-header">
+      <h1>File Scanner 📁</h1>
+    </div>
+    
+    <div id="fileScanProgress" class="scan-progress">
+      <div class="progress-steps">
+        <div class="progress-step" id="fstep1">📁 Reading...</div>
+        <div class="progress-step" id="fstep2">🔐 Hashing...</div>
+        <div class="progress-step" id="fstep3">⚠️ Checking...</div>
+        <div class="progress-step" id="fstep4">✅ Finalizing...</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fileProgressFill"></div>
+      </div>
+    </div>
+    
+    <div class="file-scanner-section">
+      <h2>Upload Files for Analysis</h2>
+      <div class="file-upload-container">
+        <input type="file" id="fileInput" multiple accept=".exe,.js,.bat,.cmd,.ps1,.vbs,.scr,.pif,.com,.zip,.rar,.7z,.doc,.docm,.xls,.xlsm,.pdf">
+        <div id="fileDropArea">Drag & drop files here or click to browse</div>
+      </div>
+      <div class="file-options">
+        <label>Max Size: <input type="number" id="maxFileSize" value="10" min="1"> MB</label>
+      </div>
+      <div class="button-group">
+        <button id="scanFileBtn">Scan Files 🛡️</button>
+        <button id="exportFilePdfBtn">Export PDF 📄</button>
+      </div>
+      <div id="fileResults" class="file-results"></div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div id="about" class="scanner-section">
+    <div class="tool-header">
+      <h1>About AM CyberScan</h1>
+    </div>
+    <div class="about-content">
+      <p>AM CyberScan is a comprehensive security tool designed to protect users from phishing attacks and modern cyber threats. It carefully scans both URLs and uploaded files to detect malicious links, hidden malware, and suspicious indicators. By analyzing potential risks in real time, the system determines whether content is safe or unsafe. With fast, reliable, and intelligent detection, AM CyberScan helps users stay secure and confident online.</p>
+      <h3>Features:</h3>
+      <ul>
+        <li>URL & Email Content Scanning</li>
+        <li>File Malware Detection</li>
+        <li>Real-time Risk Assessment</li>
+        <li>PDF Report Export</li>
+        <li>Dashboard Analytics</li>
+        <li>Scan History Reports</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Section -->
+  <div id="privacy" class="scanner-section">
+    <div class="tool-header">
+      <h1>Privacy Policy 📜</h1>
+    </div>
+    <div class="legal-content">
+      <div class="legal-section">
+        <h2>1. Introduction</h2>
+        <p>Welcome to AM CyberScan ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience using our website and services. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AM CyberScan application.</p>
+        <p>Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>2. Information We Collect</h2>
+        <h3>2.1 Personal Information</h3>
+        <p>When you register for an account, we may collect the following personal information:</p>
+        <ul>
+          <li><strong>Username:</strong> Your chosen display name for the service</li>
+          <li><strong>Email Address:</strong> For account verification and communication purposes</li>
+          <li><strong>Organization:</strong> Your company or organization name (optional)</li>
+          <li><strong>City:</strong> Your geographic location (optional)</li>
+          <li><strong>Password:</strong> Encrypted credentials for account access</li>
+        </ul>
+        
+        <h3>2.2 Automatically Collected Information</h3>
+        <p>We may automatically collect certain information when you use our service:</p>
+        <ul>
+          <li><strong>Usage Data:</strong> Information about your interactions with the service</li>
+          <li><strong>Device Information:</strong> Browser type, operating system, and device identifiers</li>
+          <li><strong>Scan Data:</strong> URLs and files you choose to scan (processed locally)</li>
+          <li><strong>Cookies:</strong> Small data files stored on your device for session management</li>
+        </ul>
+        
+        <h3>2.3 Local Storage</h3>
+        <p>We store the following data locally in your browser using localStorage:</p>
+        <ul>
+          <li>Your account credentials (encrypted)</li>
+          <li>Scan history and analysis results</li>
+          <li>User preferences and settings</li>
+          <li>Dashboard statistics</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>3. How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+          <li><strong>Provide Services:</strong> Deliver the security scanning and analysis features you request</li>
+          <li><strong>Account Management:</strong> Create and maintain your user account</li>
+          <li><strong>Improve Services:</strong> Analyze usage patterns to enhance our tools and features</li>
+          <li><strong>Generate Reports:</strong> Create detailed analysis reports you request</li>
+          <li><strong>Communication:</strong> Respond to your inquiries and provide support</li>
+          <li><strong>Security:</strong> Detect and prevent unauthorized access and malicious activities</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>4. Data Storage and Security</h2>
+        <h3>4.1 Local Storage</h3>
+        <p>All data you generate through the use of AM CyberScan is stored locally on your device. We do not maintain external databases or transmit your scan data to any external servers. Your scan history, analysis results, and personal information remain on your device.</p>
+        
+        <h3>4.2 Security Measures</h3>
+        <p>We implement appropriate technical and organizational security measures:</p>
+        <ul>
+          <li>Password encryption using industry-standard algorithms</li>
+          <li>Secure local storage mechanisms</li>
+          <li>No data transmission to external servers</li>
+          <li>Regular security assessments and updates</li>
+        </ul>
+        
+        <h3>4.3 Data Retention</h3>
+        <p>Your data is retained locally on your device until you:</p>
+        <ul>
+          <li>Delete your account</li>
+          <li>Clear your browser's local storage</li>
+          <li>Manually delete scan history</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>5. Third-Party Services</h2>
+        <p>Our application uses the following third-party libraries that process data locally:</p>
+        <ul>
+          <li><strong>Chart.js:</strong> For data visualization and charts</li>
+          <li><strong>Canvas Confetti:</strong> For celebration animations</li>
+          <li><strong>jsPDF:</strong> For PDF report generation (all processing done locally)</li>
+        </ul>
+        <p>These libraries operate entirely within your browser and do not transmit any data to external servers.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>6. Your Rights</h2>
+        <p>You have the following rights regarding your personal information:</p>
+        <ul>
+          <li><strong>Access:</strong> View all personal information stored in your account</li>
+          <li><strong>Correction:</strong> Update or correct inaccurate personal information</li>
+          <li><strong>Deletion:</strong> Request deletion of your account and associated data</li>
+          <li><strong>Data Portability:</strong> Export your data in a machine-readable format</li>
+          <li><strong>Withdrawal:</strong> Withdraw consent for data processing at any time</li>
+        </ul>
+        <p>To exercise these rights, please contact us at abubakararshad4020@gmail.com</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>7. Children's Privacy</h2>
+        <p>Our service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you become aware that a child has provided us with personal information, please contact us immediately.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>8. Changes to This Policy</h2>
+        <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page and updating the "last updated" date. You are advised to review this privacy policy periodically for any changes.</p>
+        <p>Last updated: January 2026</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>9. Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us:</p>
+        <ul>
+          <li>Email: abubakararshad4020@gmail.com</li>
+          <li>Phone: +92 (317) 45 77362</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Service Section -->
+  <div id="terms" class="scanner-section">
+    <div class="tool-header">
+      <h1>Terms of Service 📜</h1>
+    </div>
+    <div class="legal-content">
+      <div class="legal-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>Welcome to AM CyberScan. By accessing and using this application, you accept and agree to be bound by the terms and provision of this agreement. Additionally, when using this service, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+        <p>If you do not agree to abide by these terms, please do not use this service.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>2. Description of Service</h2>
+        <p>AM CyberScan provides the following services:</p>
+        <ul>
+          <li><strong>URL Scanner:</strong> Analysis of URLs and email content for phishing indicators, suspicious patterns, and potential security threats</li>
+          <li><strong>File Scanner:</strong> Analysis of files for malware indicators, hash generation, entropy analysis, and suspicious properties</li>
+          <li><strong>Dashboard:</strong> Tracking and visualization of scan history and security metrics</li>
+          <li><strong>Report Generation:</strong> Creation of PDF reports containing detailed analysis results</li>
+        </ul>
+        <p>We reserve the right to modify, suspend, or discontinue any aspect of the service at any time.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>3. User Registration and Account</h2>
+        <h3>3.1 Account Creation</h3>
+        <p>To use our service, you must create an account. You agree to:</p>
+        <ul>
+          <li>Provide accurate and complete registration information</li>
+          <li>Maintain the security of your account credentials</li>
+          <li>Promptly update any changes to your information</li>
+          <li>Accept responsibility for all activities under your account</li>
+        </ul>
+        
+        <h3>3.2 Account Responsibilities</h3>
+        <p>You are responsible for:</p>
+        <ul>
+          <li>Maintaining the confidentiality of your password</li>
+          <li>All statements made and actions taken under your account</li>
+          <li>Notifying us immediately of any unauthorized use</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>4. User Conduct</h2>
+        <p>You agree NOT to use the service to:</p>
+        <ul>
+          <li>Upload, transmit, or distribute any content that is unlawful, harmful, threatening, abusive, or otherwise objectionable</li>
+          <li>Attempt to gain unauthorized access to the service or its systems</li>
+          <li>Interfere with or disrupt the integrity or performance of the service</li>
+          <li>Collect or store personal data about other users without their consent</li>
+          <li>Use the service for any illegal or unauthorized purpose</li>
+          <li>Attempt to reverse engineer, decompile, or disassemble any part of the service</li>
+          <li>Upload or distribute files containing viruses, malware, or other harmful code</li>
+          <li>Harass, defame, or intimidate any individual or group</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>5. Educational Purpose Disclaimer</h2>
+        <h3>5.1 Not a Substitute for Professional Security</h3>
+        <p><strong>AM CyberScan is an educational tool only.</strong> The service is designed to help users understand potential security threats and should not be relied upon as the sole method of security protection.</p>
+        
+        <h3>5.2 No Warranty</h3>
+        <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. WE DO NOT GUARANTEE THAT:</p>
+        <ul>
+          <li>The service will be completely free from errors or viruses</li>
+          <li>All threats will be detected or identified</li>
+          <li>Results will be 100% accurate or comprehensive</li>
+          <li>The service will meet your specific requirements</li>
+        </ul>
+        
+        <h3>5.3 Accuracy of Results</h3>
+        <p>Our threat detection methods include:</p>
+        <ul>
+          <li>Pattern matching against known threat databases</li>
+          <li>URL structure analysis</li>
+          <li>File hash comparison</li>
+          <li>Entropy analysis for packed/encrypted files</li>
+          <li>Keyword and content scanning</li>
+        </ul>
+        <p>While we strive to provide accurate results, new threats emerge constantly. Results should be verified with additional security measures and professional security software.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>6. Limitation of Liability</h2>
+        <h3>6.1 No Liability for Damages</h3>
+        <p>IN NO EVENT SHALL AM CYBERSCAN, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION:</p>
+        <ul>
+          <li>Loss of profits, data, or business opportunities</li>
+          <li>Damages resulting from use of or reliance on the service</li>
+          <li>Damages resulting from delays or failures in providing the service</li>
+          <li>Damages resulting from incorrect or incomplete analysis results</li>
+        </ul>
+        
+        <h3>6.2 Total Liability</h3>
+        <p>OUR TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT YOU PAID, IF ANY, FOR ACCESSING THE SERVICE. (Note: Our basic service is currently free.)</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>7. Intellectual Property</h2>
+        <h3>7.1 Ownership</h3>
+        <p>The AM CyberScan service, including all content, features, and functionality, is owned by us and is protected by copyright, trademark, and other intellectual property laws.</p>
+        
+        <h3>7.2 Restrictions</h3>
+        <p>You may not:</p>
+        <ul>
+          <li>Copy, modify, or distribute our proprietary code</li>
+          <li>Reproduce, republish, or redistribute any content</li>
+          <li>Use our trademarks without prior written consent</li>
+          <li>Create derivative works based on our service</li>
+          <li>Remove or alter any copyright or proprietary notices</li>
+        </ul>
+        
+        <h3>7.3 User Content</h3>
+        <p>You retain ownership of any content you submit for scanning. By using our service, you grant us a limited license to process such content for providing the service.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>8. Prohibited Uses</h2>
+        <p>The following activities are strictly prohibited:</p>
+        <ul>
+          <li><strong>Illegal Activities:</strong> Using the service for any unlawful purpose or in violation of any local, state, national, or international law</li>
+          <li><strong>Hacking Attempts:</strong> Attempting to gain unauthorized access to any system or network</li>
+          <li><strong>Malicious Scanning:</strong> Using the service to scan targets without authorization</li>
+          <li><strong>Service Abuse:</strong> Attempting to overload, crash, or exploit the service</li>
+          <li><strong>Commercial Resale:</strong> Reselling, redistributing, or providing access to the service without authorization</li>
+          <li><strong>Automated Use:</strong> Using bots, crawlers, or automated scripts without permission</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>9. User Responsibilities</h2>
+        <p>As a user of AM CyberScan, you agree to:</p>
+        <ul>
+          <li><strong>Verify Results:</strong> Confirm analysis results with additional security tools and professional software</li>
+          <li><strong>Safe Practices:</strong> Follow cybersecurity best practices when handling suspicious files or URLs</li>
+          <li><strong>Report Issues:</strong> Notify us of any bugs, errors, or security concerns</li>
+          <li><strong>Compliance:</strong> Ensure your use of the service complies with all applicable laws</li>
+          <li><strong>Backup:</strong> Maintain backups of your important data independently of our service</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>10. Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless AM CyberScan and its officers, directors, employees, and agents from and against any claims, damages, losses, liabilities, costs, or expenses (including reasonable attorneys' fees) arising out of or relating to:</p>
+        <ul>
+          <li>Your use of the service</li>
+          <li>Your violation of these Terms of Service</li>
+          <li>Your violation of any third-party rights</li>
+          <li>Your submission of content for scanning</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>11. Termination</h2>
+        <h3>11.1 Termination by You</h3>
+        <p>You may delete your account at any time by:</p>
+        <ul>
+          <li>Using the account deletion feature in the application</li>
+          <li>Contacting abubakararshad4020@gmail.com</li>
+          <li>Clearing your browser's local storage</li>
+        </ul>
+        
+        <h3>11.2 Termination by Us</h3>
+        <p>We may terminate or suspend your access to the service immediately, without prior notice or liability, for any reason, including breach of these Terms of Service.</p>
+        
+        <h3>11.3 Effect of Termination</h3>
+        <p>Upon termination, your right to use the service will immediately cease. All provisions of these Terms which by their nature should survive termination shall survive.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>12. Governing Law</h2>
+        <p>These Terms of Service shall be governed by and construed in accordance with the laws of the jurisdiction in which AM CyberScan operates, without regard to its conflict of law provisions.</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>13. Changes to Terms</h2>
+        <p>We reserve the right to modify these Terms of Service at any time. We will provide notice of material changes by:</p>
+        <ul>
+          <li>Posting the updated terms on our website</li>
+          <li>Updating the "Last Modified" date at the top of this page</li>
+          <li>Providing notice through the application</li>
+        </ul>
+        <p>Your continued use of the service after such modifications constitutes acceptance of the updated terms.</p>
+        <p>Last modified: January 2026</p>
+      </div>
+      
+      <div class="legal-section">
+        <h2>14. Contact Information</h2>
+        <p>If you have any questions about these Terms of Service, please contact us:</p>
+        <ul>
+          <li>Email: abubakararshad4020@gmail.com</li>
+          <li>Phone: +92 (317) 45 77362</li>
+        </ul>
+      </div>
+      
+      <div class="legal-section">
+        <h2>15. Acknowledgment</h2>
+        <p>BY USING AM CYBERSCAN, YOU ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTAND THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" id="footer" style="display: none;">
+  <div class="footer-content">
+    <p class="footer-brand">🛡️ AM CyberScan © 2026</p>
+    <p class="footer-disclaimer">Educational Use Only</p>
+    <div class="footer-links">
+      <a href="#privacy" class="footer-link" data-target="privacy">Privacy Policy</a>
+      <span>|</span>
+      <a href="#terms" class="footer-link" data-target="terms">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
